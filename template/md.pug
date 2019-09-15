@@ -15,4 +15,6 @@ each item in moments
         div > [#{item.originalPost.title}](#{item.originalPost.url})
         if item.originalPost.description
           div > #{item.originalPost.description}
+        if item.originalPost.qrcode
+          div > ![二维码](#{item.originalPost.qrcode})
     br

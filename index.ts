@@ -31,6 +31,7 @@ const raw = JSON.parse(rawJson.toString()) as MomentItem[];
         { margin: 0, errorCorrectionLevel: "M" }
       );
       shortenUrls[hash] = moment.originalPost.url;
+      moment.originalPost.qrcode = `https://uice.lu/bianzhou/qrcodes/${hash}.png`;
     }
   });
   writeFileSync("./data/shorten_urls.json", JSON.stringify(shortenUrls));

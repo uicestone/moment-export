@@ -9,6 +9,7 @@ export default interface MomentItem {
     description: string;
     url: string;
     thumbnail: string;
+    qrcode?: string;
   };
   location: string;
   comments: {
