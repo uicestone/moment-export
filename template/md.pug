@@ -1,0 +1,18 @@
+each item in moments
+  if item.content.length >= 100
+    div
+      div
+        if item.title
+          span #{item.title} 
+        span `#{item.date}`
+      div ------
+      div(style="white-space:pre-line")= item.content
+      if item.mediaList && item.mediaList.length
+        each media in item.mediaList
+          span ![图片](#{media})
+      br
+      if item.originalPost
+        div > [#{item.originalPost.title}](#{item.originalPost.url})
+        if item.originalPost.description
+          div > #{item.originalPost.description}
+    br

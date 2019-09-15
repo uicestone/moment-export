@@ -63,5 +63,7 @@ typings/
 # Project specifics
 .DS_Store
 /data/*
-!.gitkeep
 /public/*.html
+/public/qrcodes/*
+!.gitkeep
+

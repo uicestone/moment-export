@@ -1,0 +1,197 @@
+doctype html
+html
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    title 我的朋友圈
+    meta(charset='utf-8')
+    meta(name='viewport', content='initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no')
+    link(rel='stylesheet', href='css/app.css')
+    script(src='js/jquery.min.js', type='text/javascript')
+    style(type='text/css').
+      * {cursor: pointer;}
+      .weui_mask_transition {
+      display: none;
+      position: fixed;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, 0);
+      -webkit-transition: background .3s;
+      transition: background .3s;
+      }
+      .weui_fade_toggle {
+      background: rgba(0, 0, 0, 0.6);
+      }
+      .weui_actionsheet {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      -webkit-transform: translate(0, 100%);
+      -ms-transform: translate(0, 100%);
+      transform: translate(0, 100%);
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      z-index: 2;
+      width: 100%;
+      background-color: #EFEFF4;
+      -webkit-transition: -webkit-transform .3s;
+      transition: transform .3s;
+      }
+      .weui_actionsheet_toggle {
+      -webkit-transform: translate(0, 0);
+      -ms-transform: translate(0, 0);
+      transform: translate(0, 0);
+      }
+      .weui_actionsheet_menu {
+      background-color: #FFFFFF;
+      }
+      .weui_actionsheet_cell:before {
+      content: " ";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 1px;
+      border-top: 1px solid #D9D9D9;
+      -webkit-transform-origin: 0 0;
+      -ms-transform-origin: 0 0;
+      transform-origin: 0 0;
+      -webkit-transform: scaleY(0.5);
+      -ms-transform: scaleY(0.5);
+      transform: scaleY(0.5);
+      }
+      .weui_actionsheet_cell:first-child:before {
+      display: none;
+      }
+      .weui_actionsheet_cell {
+      position: relative;
+      padding: 10px 0;
+      text-align: center;
+      font-size: 18px;
+      }
+      .weui_actionsheet_cell.title {
+      color: #999;
+      }
+      .weui_actionsheet_action {
+      margin-top: 6px;
+      background-color: #FFFFFF;
+      }
+  body
+    #actionSheet_wrap
+      #mask.weui_mask_transition(style='display: none;')
+      #weui_actionsheet.weui_actionsheet
+        .weui_actionsheet_menu
+          .weui_actionsheet_cell.title 选择下面👇进入你的朋友圈
+          .weui_actionsheet_cell.play_pyq(data-scene='1') 男版朋友圈
+          .weui_actionsheet_cell.play_pyq(data-scene='2') 女版朋友圈
+        .weui_actionsheet_action
+          #actionsheet_cancel.weui_actionsheet_cell 取消
+    div(style='margin:0 auto;display:none;')
+      img.data-avt(src='images/0.jpg')
+    header
+      img#bg(src='images/bg.jpg')
+      p#user-name.data-name 扁舟先生
+      img#avt.data-avt(src='images/0.jpg')
+    #main
+      #list
+        ul
+          each item in moments
+            li
+              .po-avt-wrap
+                img.po-avt.data-avt(src='images/n5.jpg')
+              .po-cmt
+                .po-hd
+                  p.po-name
+                    span.data-name 扁舟先生
+                  .post
+                    p= item.content
+                    if item.mediaList && item.mediaList.length
+                      p
+                        each media in item.mediaList
+                          img.list-img(src=media, style='height: 80px; width: 80px; background: white')
+                  if item.originalPost
+                    .cmt-wrap
+                      .cmt-list
+                        a(href=item.originalPost.url style="color:#252525")
+                          img(src=item.originalPost.thumbnail style="width: 50px;height: 50px;object-fit: cover;float: left;margin-right: 10px;")
+                          .origin-title= item.originalPost.title
+                          .origin-desc= item.originalPost.description
+                          .clearfix(style="clear:both")
+                  p.time= item.date
+                  img.c-icon(src='images/c.png')
+                .r
+                .cmt-wrap
+                  if item.likes && item.likes.length
+                    .like
+                      img(src='images/l.png')
+                      each like in item.likes
+                        span=like.userName
+                  if item.comments && item.comments.length
+                    .cmt-list
+                      each comment in item.comments
+                        p
+                          span=comment.authorName+'：'
+                          | #{comment.content}
+                
+      #share
+        p （此朋友圈纯属虚构）
+        div(style='padding:15px;padding-bottom:20px')
+          button#gotoplay.btn.btn-success.btn-lg.btn-block(onclick='showActionSheet();') 我也要玩
+          br
+    script.
+    script.
+      function gotoplay(scene) {
+      var gourl = "/act/pengYouQuan/my.php?sv=" + scene;
+      location.href = gourl;
+      }
+      function safetostring(str) {
+      return String(str).replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+      }
+      //$("#list").html($("#scene").html());
+      setTimeout(function () {
+      // $(".data-name").text(safetostring(nickname));
+      //$(".data-avt").attr("src", headimgurl);
+      var cw = $('.list-img').width();
+      $('.list-img').css({'height': cw + 'px'});
+      $('.list-img').click(function(){
+        window.open($(this).get(0).src);
+      })
+      }, 0);
+      $(window).resize(function () {
+      var cw = $('.list-img').width();
+      $('.list-img').css({'height': cw + 'px'});
+      });
+      $(document.body).show();
+      function hideActionSheet(weuiActionsheet, mask) {
+      weuiActionsheet.removeClass('weui_actionsheet_toggle');
+      mask.removeClass('weui_fade_toggle');
+      weuiActionsheet.on('transitionend', function () {
+      mask.hide();
+      }).on('webkitTransitionEnd', function () {
+      mask.hide();
+      })
+      }
+      function showActionSheet() {
+      //- var mask = $('#mask');
+      //- var weuiActionsheet = $('#weui_actionsheet');
+      //- weuiActionsheet.addClass('weui_actionsheet_toggle');
+      //- mask.show().addClass('weui_fade_toggle').click(function () {
+      //- hideActionSheet(weuiActionsheet, mask);
+      //- });
+      //- $('#actionsheet_cancel').click(function () {
+      //- hideActionSheet(weuiActionsheet, mask);
+      //- });
+      //- weuiActionsheet.unbind('transitionend').unbind('webkitTransitionEnd');
+      }
+      $('#list').not(".noplayimg").on('click', function () {
+      showActionSheet();
+      });
+      $('img').not(".noplayimg").on('click', function (e) {
+      showActionSheet();
+      });
+      $('.play_pyq').on('click', function () {
+      var scene = $(this).data("scene");
+      gotoplay(scene);
+      });
